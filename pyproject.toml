@@ -1,0 +1,71 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "openclaw-health-mcp"
+version = "0.1.0"
+description = "MCP server exposing OpenClaw deployment health — gateway status, resource pressure, error trends, skill-registry integrity, upgrade history, disk usage."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Temur Khan", email = "temur@pixelette.tech" },
+]
+keywords = ["mcp", "model-context-protocol", "openclaw", "health", "monitoring", "production-ai"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Monitoring",
+    "Topic :: System :: Systems Administration",
+]
+requires-python = ">=3.11"
+dependencies = [
+    "mcp>=1.0.0",
+    "pydantic>=2.0.0",
+    "psutil>=5.9.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.5",
+    "mypy>=1.10",
+]
+
+[project.scripts]
+openclaw-health-mcp = "openclaw_health_mcp.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/temurkhan13/openclaw-health-mcp"
+Documentation = "https://github.com/temurkhan13/openclaw-health-mcp/blob/main/SPEC.md"
+"Bug Tracker" = "https://github.com/temurkhan13/openclaw-health-mcp/issues"
+"Custom MCP Build" = "https://github.com/temurkhan13/openclaw-health-mcp#need-this-adapted-to-your-stack"
+Changelog = "https://github.com/temurkhan13/openclaw-health-mcp/blob/main/CHANGELOG.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/openclaw_health_mcp"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "B", "A", "C4", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unreachable = true

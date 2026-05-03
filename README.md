@@ -1,0 +1,200 @@
+# openclaw-health-mcp
+
+<!-- mcp-name: io.github.temurkhan13/openclaw-health-mcp -->
+
+> **Single-pane deployment health for OpenClaw.** An MCP server that surfaces gateway state, resource pressure, error trends, skill-registry integrity, upgrade history, and disk usage — to any Claude or MCP-aware agent. Companion to [silentwatch-mcp](https://github.com/temurkhan13/silentwatch-mcp); install both for full operational visibility.
+
+[![Status: v0.1 alpha](https://img.shields.io/badge/status-v0.1%20alpha-yellow)](https://github.com/temurkhan13/openclaw-health-mcp) [![Tests: 31 passing](https://img.shields.io/badge/tests-31%20passing-brightgreen)](./tests) [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](./LICENSE) [![MCP](https://img.shields.io/badge/protocol-MCP-purple)](https://modelcontextprotocol.io/)
+
+---
+
+## What it does
+
+Production OpenClaw operators need a single tool that answers "is this deployment healthy right now?" without SSH'ing in to run six separate commands. `openclaw-health-mcp` exposes that visibility as MCP tools your AI agent can query directly:
+
+```
+> claude: is my OpenClaw deployment healthy?
+[MCP tool: health_overview]
+overall_health: critical
+component_summary:
+  gateway: degraded         (bound to 0.0.0.0, 1 crash in 24h)
+  resources: degraded       (memory at 78%, swap at 12%)
+  skill_registry: critical  (skill 'clawhub-trending-bot-v2' flagged suspicious)
+  upgrade: degraded         (last upgrade rolled back)
+  cron: degraded            (1 overdue job)
+  disk: degraded            (root at 82%, log dir +187 MB/24h)
+
+critical_findings:
+  [CRITICAL] Skill 'clawhub-trending-bot-v2' flagged — possible exfiltration. Disable.
+  [DEGRADED] Last upgrade 2026.4.23→2026.4.26 rolled back: websocket_stalls, cpu_spike.
+  [DEGRADED] Root disk at 82% — set up log rotation before reaching 95%.
+  [DEGRADED] 1 cron job(s) overdue. Install silentwatch-mcp for silent-failure detection.
+```
+
+---
+
+## Why `openclaw-health-mcp`
+
+Three things that existing tools (Datadog, Prometheus, raw `top`/`free`/`df`) don't do for OpenClaw specifically:
+
+1. **OpenClaw-aware probes.** Detects 0.0.0.0-binding (the default-publicly-exposed misconfig per the 135k exposed-instances stat), parses ClawHub skill-registry diffs, recognizes named upgrade-regression patterns (`websocket_stalls`, `cpu_spike` post-2026.4.26), distinguishes intentional restarts from crashes.
+2. **MCP-native, no integration layer.** Claude Desktop, Cline, Continue, OpenClaw agents — any MCP-aware client queries directly. No Grafana plugin, no API wrapper, no JSON to parse manually.
+3. **Composable with the rest of the production-AI MCP stack.** Pairs with [silentwatch-mcp](https://github.com/temurkhan13/silentwatch-mcp) (cron silent-failure detection — `cron_health` here is intentionally basic and defers to silentwatch when present). Skill-registry vetting in this server is light heuristics; deep static analysis goes in `openclaw-skill-vetter-mcp` (planned).
+
+Built for the **SMB self-hoster** running OpenClaw on a $40 VPS where Datadog is overkill — but the OpenClaw-specific patterns are valuable on enterprise infra too.
+
+---
+
+## Tool surface
+
+The server registers these MCP tools (full spec in [SPEC.md](./SPEC.md)):
+
+| Tool | Returns |
+|------|---------|
+| `health_overview` | Full snapshot — every component + overall HealthLevel + ranked critical findings |
+| `gateway_status` | Gateway alive/dead, uptime, restarts, crashes, bind address |
+| `cpu_memory_health` | CPU/memory/swap snapshot + 24h OOM count + load averages |
+| `recent_errors(window_hours, min_severity)` | Recent error/warning entries, filterable by lookback + severity |
+| `skill_registry_check` | Skill counts, recent additions/modifications, light heuristic flags |
+| `last_upgrade_status` | From-version, to-version, outcome, regression markers, available upgrade |
+| `cron_health` | Basic cron summary (defers to silentwatch-mcp when richer detection wanted) |
+| `disk_usage` | Root disk + log directory size + 24h growth + largest log files |
+
+Resources:
+
+- `health://overview` — full snapshot (same as `health_overview` tool)
+- `health://gateway` — gateway-only
+- `health://resources` — CPU/memory-only
+
+Prompts:
+
+- `diagnose-degraded-health` — diagnostic walk-through, ranked corrective actions
+- `summarize-health-trend` — daily operational digest
+
+---
+
+## Quickstart
+
+> **v0.1 alpha — mock backend only.** Real backends (Linux `/proc` + OpenClaw process detection) ship in v0.2; full feature set + PyPI in v1.0.
+
+### Install (from source)
+
+```bash
+git clone https://github.com/temurkhan13/openclaw-health-mcp
+cd openclaw-health-mcp
+pip install -e .
+```
+
+### Configure for Claude Desktop
+
+Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
+
+```json
+{
+  "mcpServers": {
+    "openclaw-health": {
+      "command": "python",
+      "args": ["-m", "openclaw_health_mcp"],
+      "env": {
+        "OPENCLAW_HEALTH_BACKEND": "mock"
+      }
+    }
+  }
+}
+```
+
+Restart Claude Desktop. Test:
+
+> Show me a full health snapshot of my OpenClaw deployment.
+
+The mock backend returns deliberately mixed data (gateway DEGRADED, skill registry CRITICAL, etc.) so the response demonstrates the full schema.
+
+### Backends
+
+| Backend | Status | Description |
+|---------|--------|-------------|
+| `mock` | ✅ v0.1 | Sample data for protocol-wiring verification (default) |
+| `linux-proc` | ⏳ v0.2 | Reads `/proc/meminfo`, `/proc/stat`, `/proc/loadavg`, `journalctl` for OOM events |
+| `openclaw` | ⏳ v0.2 | Parses OpenClaw config + log directory + ClawHub manifest + upgrade journal |
+
+Select via `OPENCLAW_HEALTH_BACKEND` env var. Multi-backend support (combining `linux-proc` for system metrics + `openclaw` for application-specific) is planned for v0.3.
+
+---
+
+## Roadmap
+
+| Version | Scope | Status |
+|---------|-------|--------|
+| v0.1 | Protocol wiring, mock backend, all 8 tools registered with stub data, 31 tests pass | ✅ Complete |
+| v0.2 | `linux-proc` + `openclaw` backends, real `/proc` parsing, OpenClaw process detection | ⏳ Next session |
+| v0.3 | Backend federation (`linux-proc + openclaw`), expanded log-source parsing | ⏳ |
+| v1.0 | Polish: PyPI release, GitHub Actions CI matrix, MCP registry submissions | ⏳ |
+| v1.x | `cowork` backend, custom backend SDK, webhook emitter for alerts | ⏳ |
+
+---
+
+## Need this adapted to your stack?
+
+`openclaw-health-mcp` ships with a mock backend at v0.1 (Linux + OpenClaw backends in v0.2). If your AI agent runtime is different — Claude Code, Cowork, custom Python services, agent harnesses on AWS / GCP — and you want the same single-pane health visibility for it, that's a **Custom MCP Build** engagement.
+
+| Tier | Scope | Investment | Timeline |
+|------|-------|------------|----------|
+| Simple | Single backend adapter for an existing runtime with documented logging/metrics | **$8,000–$10,000** | 1–2 weeks |
+| Standard | Custom backend + custom severity rules + integration with your existing alerting | **$15,000–$20,000** | 2–4 weeks |
+| Complex | Multi-backend federation + RBAC + audit-log integration + on-call workflow | **$25,000–$35,000** | 4–8 weeks |
+
+**To engage:**
+1. Email **temur@pixelette.tech** with subject `Custom MCP Build inquiry`
+2. Include: a 1-paragraph description of your stack + which tier you're considering
+3. Reply within 2 business days with a 30-min discovery call slot
+
+This server is part of a **production-AI infrastructure MCP suite** — companion to [silentwatch-mcp](https://github.com/temurkhan13/silentwatch-mcp) (cron silent-failure detection) and the upcoming [AI Production Discipline Framework Notion template](https://temurah.gumroad.com/l/ai-production-discipline-framework) (the methodology these tools operationalize).
+
+---
+
+## Production AI audits
+
+If you're running production AI and want an outside practitioner to score readiness, find the failure patterns already present, and write the corrective-action plan — that's what this MCP is built into supporting:
+
+| Tier | Scope | Investment | Timeline |
+|------|-------|------------|----------|
+| Audit Lite | One system, top-5 findings, written report | **$1,500** | 1 week |
+| Audit Standard | Full audit, all 14 patterns, 5 Cs findings, 90-day follow-up | **$3,000** | 2–3 weeks |
+| Audit + Workshop | Standard audit + 2-day team workshop + first monthly audit included | **$7,500** | 3–4 weeks |
+
+Same email channel: **temur@pixelette.tech** with subject `AI audit inquiry`.
+
+---
+
+## Contributing
+
+PRs welcome. Backends are intentionally pluggable — see `src/openclaw_health_mcp/backends/` for the contract.
+
+To add a new backend:
+
+1. Subclass `HealthBackend` in `backends/<your_backend>.py`
+2. Implement the 7 abstract probe methods (one per component)
+3. Register in `backends/__init__.py`
+4. Add tests in `tests/test_backend_<your_backend>.py`
+
+Bug reports + feature requests: open a GitHub issue.
+
+---
+
+## License
+
+MIT — see [LICENSE](./LICENSE).
+
+---
+
+## Related
+
+- [silentwatch-mcp](https://github.com/temurkhan13/silentwatch-mcp) — cron silent-failure detection. Install alongside this server for richer `cron_health` data.
+- [AI Production Discipline Framework](https://temurah.gumroad.com/l/ai-production-discipline-framework) — Notion template, $29 — the methodology these MCP tools implement.
+- [SPEC.md](./SPEC.md) — full server design.
+- [Model Context Protocol](https://modelcontextprotocol.io/) — protocol overview.
+
+---
+
+Built by [Temur Khan](https://www.notion.so/@temurkhan) — independent practitioner on production AI systems.
+Contact: **temur@pixelette.tech**
