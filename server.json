@@ -1,0 +1,20 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.temurkhan13/openclaw-health-mcp",
+  "description": "MCP server for OpenClaw deployment health: gateway, resources, errors, skills, upgrades, disk.",
+  "repository": {
+    "url": "https://github.com/temurkhan13/openclaw-health-mcp",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "openclaw-health-mcp",
+      "version": "1.0.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "openclaw-health-mcp"
-version = "0.1.0"
+version = "1.0.0"
 description = "MCP server exposing OpenClaw deployment health — gateway status, resource pressure, error trends, skill-registry integrity, upgrade history, disk usage."
 readme = "README.md"
 license = { file = "LICENSE" }

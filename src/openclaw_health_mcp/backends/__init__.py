@@ -10,10 +10,12 @@ Selection is via the `OPENCLAW_HEALTH_BACKEND` env var (default: `mock`).
 from __future__ import annotations
 
 from openclaw_health_mcp.backends.base import HealthBackend
+from openclaw_health_mcp.backends.linux_proc import LinuxProcBackend
 from openclaw_health_mcp.backends.mock import MockBackend
 
 _REGISTRY: dict[str, type[HealthBackend]] = {
     "mock": MockBackend,
+    "linux-proc": LinuxProcBackend,
 }
 
 
@@ -30,4 +32,4 @@ def available_backends() -> list[str]:
     return sorted(_REGISTRY.keys())
 
 
-__all__ = ["HealthBackend", "MockBackend", "get_backend", "available_backends"]
+__all__ = ["HealthBackend", "LinuxProcBackend", "MockBackend", "available_backends", "get_backend"]

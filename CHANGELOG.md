@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.0] — 2026-05-04
+
+### Added
+- **`linux-proc` backend** — system metrics via psutil + journalctl/dmesg parsing for OOM events. Cross-platform for cpu/memory/swap/load/disk (psutil); Linux-specific for OOM-event detection and recent-error log parsing (journalctl `-p` priority filter); falls back gracefully on macOS/Windows. Reports HealthLevel.UNKNOWN for OpenClaw-specific components (gateway, skill_registry, upgrade, cron) — those need the `openclaw` backend (planned v1.1).
+- **GitHub Actions CI** — matrix testing on ubuntu/macos/windows × Python 3.11/3.12, separate ruff + mypy lint job, sdist+wheel build artifact upload. Mirrors silentwatch-mcp's CI configuration.
+- **GitHub Actions release workflow** — fires on `v*` tag push, verifies tag matches `pyproject.toml` version, builds + publishes to PyPI via Trusted Publishing.
+- **`server.json`** for the official Model Context Protocol Registry submission.
+- **Severity classification thresholds** documented as module constants (`_CPU_DEGRADED_PCT=75`, `_MEM_DEGRADED_PCT=70`, `_DISK_DEGRADED_PCT=85`, etc.) — overridable via subclassing the backend.
+- 19 new tests in `tests/test_backend_linux_proc.py` (78 total) — mocked psutil + subprocess calls so tests pass cross-platform.
+
+### Changed
+- Bumped from v0.1 alpha (mock-only) to v1.0 with one production-ready backend (`linux-proc`). Mock backend remains the development default.
+
 ## [0.1.0] — 2026-05-04
 
 ### Added

@@ -4,7 +4,7 @@
 
 > **Single-pane deployment health for OpenClaw.** An MCP server that surfaces gateway state, resource pressure, error trends, skill-registry integrity, upgrade history, and disk usage — to any Claude or MCP-aware agent. Companion to [silentwatch-mcp](https://github.com/temurkhan13/silentwatch-mcp); install both for full operational visibility.
 
-[![Status: v0.1 alpha](https://img.shields.io/badge/status-v0.1%20alpha-yellow)](https://github.com/temurkhan13/openclaw-health-mcp) [![Tests: 31 passing](https://img.shields.io/badge/tests-31%20passing-brightgreen)](./tests) [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](./LICENSE) [![MCP](https://img.shields.io/badge/protocol-MCP-purple)](https://modelcontextprotocol.io/)
+[![Status: v1.0.0](https://img.shields.io/badge/status-v1.0.0-brightgreen)](https://github.com/temurkhan13/openclaw-health-mcp) [![Tests: 59 passing](https://img.shields.io/badge/tests-59%20passing-brightgreen)](./tests) [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](./LICENSE) [![MCP](https://img.shields.io/badge/protocol-MCP-purple)](https://modelcontextprotocol.io/) [![PyPI](https://img.shields.io/pypi/v/openclaw-health-mcp)](https://pypi.org/project/openclaw-health-mcp/)
 
 ---
 
@@ -75,14 +75,10 @@ Prompts:
 
 ## Quickstart
 
-> **v0.1 alpha — mock backend only.** Real backends (Linux `/proc` + OpenClaw process detection) ship in v0.2; full feature set + PyPI in v1.0.
-
-### Install (from source)
+### Install
 
 ```bash
-git clone https://github.com/temurkhan13/openclaw-health-mcp
-cd openclaw-health-mcp
-pip install -e .
+pip install openclaw-health-mcp
 ```
 
 ### Configure for Claude Desktop
@@ -113,11 +109,11 @@ The mock backend returns deliberately mixed data (gateway DEGRADED, skill regist
 
 | Backend | Status | Description |
 |---------|--------|-------------|
-| `mock` | ✅ v0.1 | Sample data for protocol-wiring verification (default) |
-| `linux-proc` | ⏳ v0.2 | Reads `/proc/meminfo`, `/proc/stat`, `/proc/loadavg`, `journalctl` for OOM events |
-| `openclaw` | ⏳ v0.2 | Parses OpenClaw config + log directory + ClawHub manifest + upgrade journal |
+| `mock` | ✅ v1.0 | Sample data for protocol-wiring verification (default) |
+| `linux-proc` | ✅ v1.0 | psutil-based system metrics (CPU/memory/swap/load/disk) cross-platform; Linux-specific OOM-event detection via `journalctl`/`dmesg`; recent-error log parsing via journalctl. Returns UNKNOWN for OpenClaw-specific components (gateway, skill_registry, upgrade, cron) — those need the `openclaw` backend |
+| `openclaw` | ⏳ v1.1 | Parses OpenClaw config + log directory + ClawHub manifest + upgrade journal |
 
-Select via `OPENCLAW_HEALTH_BACKEND` env var. Multi-backend support (combining `linux-proc` for system metrics + `openclaw` for application-specific) is planned for v0.3.
+Select via `OPENCLAW_HEALTH_BACKEND` env var. Multi-backend support (federating `linux-proc` system metrics + `openclaw` application-specific) is planned for v1.2.
 
 ---
 
@@ -125,10 +121,10 @@ Select via `OPENCLAW_HEALTH_BACKEND` env var. Multi-backend support (combining `
 
 | Version | Scope | Status |
 |---------|-------|--------|
-| v0.1 | Protocol wiring, mock backend, all 8 tools registered with stub data, 31 tests pass | ✅ Complete |
-| v0.2 | `linux-proc` + `openclaw` backends, real `/proc` parsing, OpenClaw process detection | ⏳ Next session |
-| v0.3 | Backend federation (`linux-proc + openclaw`), expanded log-source parsing | ⏳ |
-| v1.0 | Polish: PyPI release, GitHub Actions CI matrix, MCP registry submissions | ⏳ |
+| v0.1 | Protocol wiring, mock backend, 8 tools / 3 resources / 2 prompts, 40 tests | ✅ |
+| v1.0 | `linux-proc` backend (psutil + journalctl/dmesg OOM detection + log parsing); GitHub Actions CI matrix; PyPI Trusted Publishing; MCP Registry submission; 59 tests | ✅ |
+| v1.1 | `openclaw` backend — parses OpenClaw config, log dir, ClawHub manifest, upgrade journal | ⏳ |
+| v1.2 | Backend federation (`linux-proc + openclaw`); expanded log sources | ⏳ |
 | v1.x | `cowork` backend, custom backend SDK, webhook emitter for alerts | ⏳ |
 
 ---
