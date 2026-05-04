@@ -2,7 +2,7 @@
 
 <!-- mcp-name: io.github.temurkhan13/openclaw-health-mcp -->
 
-> **Single-pane deployment health for OpenClaw.** An MCP server that surfaces gateway state, resource pressure, error trends, skill-registry integrity, upgrade history, and disk usage — to any Claude or MCP-aware agent. Companion to [silentwatch-mcp](https://github.com/temurkhan13/silentwatch-mcp); install both for full operational visibility.
+> **MCP server for AI agent deployment health** — gateway status, CPU/RAM/swap, recent errors from journalctl/dmesg, skill-registry integrity, upgrade outcomes, cron + disk usage in a single tool call. Each component gets a HEALTHY/DEGRADED/CRITICAL classification, with overall rollup + ranked critical findings. **Linux-proc backend works on any Linux/macOS/Windows host; OpenClaw operators get native `~/.openclaw/` parsing as a built-in reference implementation.** Keywords: AI agent health, production AI monitoring, deployment readiness, MCP infrastructure observability.
 
 [![Status: v1.0.0](https://img.shields.io/badge/status-v1.0.0-brightgreen)](https://github.com/temurkhan13/openclaw-health-mcp) [![Tests: 59 passing](https://img.shields.io/badge/tests-59%20passing-brightgreen)](./tests) [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](./LICENSE) [![MCP](https://img.shields.io/badge/protocol-MCP-purple)](https://modelcontextprotocol.io/) [![PyPI](https://img.shields.io/pypi/v/openclaw-health-mcp)](https://pypi.org/project/openclaw-health-mcp/)
 
@@ -10,7 +10,7 @@
 
 ## What it does
 
-Production OpenClaw operators need a single tool that answers "is this deployment healthy right now?" without SSH'ing in to run six separate commands. `openclaw-health-mcp` exposes that visibility as MCP tools your AI agent can query directly:
+Anyone running production AI agents needs a single tool that answers "is this deployment healthy right now?" without SSH'ing in to run six separate commands. `openclaw-health-mcp` exposes that visibility as MCP tools your Claude (or any MCP-aware) agent can query directly. Works on any Linux/macOS/Windows host out of the box via the `linux-proc` backend; OpenClaw operators get an additional native backend that parses `~/.openclaw/` paths.
 
 ```
 > claude: is my OpenClaw deployment healthy?

@@ -5,13 +5,13 @@ build-backend = "hatchling.build"
 [project]
 name = "openclaw-health-mcp"
 version = "1.0.0"
-description = "MCP server exposing OpenClaw deployment health — gateway status, resource pressure, error trends, skill-registry integrity, upgrade history, disk usage."
+description = "MCP server for AI agent deployment health — gateway status, CPU/memory/swap, recent errors, skill registry integrity, upgrade history, cron + disk usage. Cross-platform Linux-proc backend; OpenClaw operators get native ~/.openclaw/ parsing as reference implementation."
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [
     { name = "Temur Khan", email = "temur@pixelette.tech" },
 ]
-keywords = ["mcp", "model-context-protocol", "openclaw", "health", "monitoring", "production-ai"]
+keywords = ["mcp", "model-context-protocol", "claude", "ai-agent", "production-ai", "health", "monitoring", "deployment", "observability", "openclaw", "agent-ops", "infrastructure"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
