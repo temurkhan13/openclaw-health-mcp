@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.1] — 2026-05-04
+
+### Changed — README v2 metadata refresh (PyPI republish)
+- README repositioned with universal-first lede + HN Ask HN buyer-mental-model citations (commits `eeb75fd` + `2e5315c`). Originally landed in repo on 2026-05-04; this patch bump republishes to PyPI so the new description lands in PyPI search index. No code changes.
+- README "What it does" now leads with the HN front-page thread *Ask HN: How are you monitoring AI agents in production?* (March 2026) and three verbatim comments — the language buyers actually search for.
+- Positioning vs LangSmith / Langfuse / AgentShield / OTEL clarified: this server sits one level closer to the agent runtime, read-only and MCP-native.
+- pyproject.toml description tightened toward universal AI-agent deployment health; cross-platform Linux-proc backend + OpenClaw as native reference framing made explicit.
+
 ## [1.0.0] — 2026-05-04
 
 ### Added
@@ -35,5 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - README with positioning + Custom MCP Build CTA + AI Production Audit cross-link + silentwatch-mcp pairing note.
 - SPEC.md with full server design.
 
-[Unreleased]: https://github.com/temurkhan13/openclaw-health-mcp/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/temurkhan13/openclaw-health-mcp/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/temurkhan13/openclaw-health-mcp/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/temurkhan13/openclaw-health-mcp/compare/v0.1.0...v1.0.0
 [0.1.0]: https://github.com/temurkhan13/openclaw-health-mcp/releases/tag/v0.1.0
