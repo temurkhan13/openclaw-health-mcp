@@ -10,7 +10,13 @@
 
 ## What it does
 
-Anyone running production AI agents needs a single tool that answers "is this deployment healthy right now?" without SSH'ing in to run six separate commands. `openclaw-health-mcp` exposes that visibility as MCP tools your Claude (or any MCP-aware) agent can query directly. Works on any Linux/macOS/Windows host out of the box via the `linux-proc` backend; OpenClaw operators get an additional native backend that parses `~/.openclaw/` paths.
+Anyone running production AI agents needs a single tool that answers "is this deployment healthy right now?" without SSH'ing in to run six separate commands. The HN front-page thread [Ask HN: How are you monitoring AI agents in production?](https://news.ycombinator.com/item?id=47301395) (March 2026) made the gap explicit — the most-upvoted comments described:
+
+- *"observability and governance cannot live inside the agent framework. They have to live in an independent execution layer"* — the framework-level monitoring leaks audit trail when teams use multiple frameworks
+- *"agent makes 10,000 correct $0.02 decisions that collectively don't make sense"* — per-call rate limits miss systemic patterns
+- The gap that "actually hurts during post-mortems" — knowing whether a model drifted, context window failed, or tool misbehaved
+
+Existing options (LangSmith, Langfuse, AgentShield, OTEL/LGTM) sit at the framework or proxy layer. **`openclaw-health-mcp` sits one level closer to the agent runtime** — read-only, local, MCP-native — surfacing infrastructure-layer health (gateway, CPU/RAM, recent errors, skill-registry, upgrade outcome, cron, disk) to the same Claude conversation that's running the agent. Works on any Linux/macOS/Windows host out of the box via the `linux-proc` backend; OpenClaw operators get an additional native backend that parses `~/.openclaw/` paths.
 
 ```
 > claude: is my OpenClaw deployment healthy?
