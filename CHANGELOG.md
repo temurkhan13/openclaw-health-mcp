@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.2] — 2026-05-05
+
+### Changed — cross-link mesh extension to 6th MCP
+- README "Related" section updated to reference [openclaw-output-vetter-mcp](https://github.com/temurkhan13/openclaw-output-vetter-mcp) (v1.0.1, shipped 2026-05-04). Bundle reference updated to "5 others / 6-pack". Cost-tracker description annotated with v1.1+ (quota-window awareness); upgrade-orchestrator with v1.2+ (provider-side regression detection). Pure metadata refresh — no code changes.
+
 ## [1.0.1] — 2026-05-04
 
 ### Changed — README v2 metadata refresh (PyPI republish)
