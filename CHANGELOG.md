@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.3] — 2026-05-06
+
+### Changed — overnight Phase 1B + 2B docs/test refresh
+
+Bundles two commits already on main as a single PyPI republish:
+
+- [`5e8e009`](https://github.com/temurkhan13/openclaw-health-mcp/commit/5e8e009) **test:** server-protocol coverage gap-fillers (Phase 1B). Tests-only — registration / dispatch / unknown-tool fallback; raises `server.py` coverage 65% → 86%. Note: the invalid-severity defensive branch is unreachable through the MCP protocol's enum-validator, documented as known-uncovered.
+- [`bb98ae8`](https://github.com/temurkhan13/openclaw-health-mcp/commit/bb98ae8) **docs:** SPEC.md drift fix. Pre-existing SPEC header read "v0.1 (alpha — mock backend only) / 31 tests" but the package shipped v1.0.x five+ months back with the linux-proc backend production-ready and 74 tests passing. SPEC now correctly reflects the v1.0.x surface.
+
+No code or detection-rule changes. Patch bump republishes to PyPI so the SPEC text matches the rendered "Project description" page.
+
 ## [1.0.2] — 2026-05-05
 
 ### Changed — cross-link mesh extension to 6th MCP
@@ -48,7 +59,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - README with positioning + Custom MCP Build CTA + AI Production Audit cross-link + silentwatch-mcp pairing note.
 - SPEC.md with full server design.
 
-[Unreleased]: https://github.com/temurkhan13/openclaw-health-mcp/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/temurkhan13/openclaw-health-mcp/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/temurkhan13/openclaw-health-mcp/compare/v1.0.2...v1.0.3
+[1.0.2]: https://github.com/temurkhan13/openclaw-health-mcp/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/temurkhan13/openclaw-health-mcp/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/temurkhan13/openclaw-health-mcp/compare/v0.1.0...v1.0.0
 [0.1.0]: https://github.com/temurkhan13/openclaw-health-mcp/releases/tag/v0.1.0
