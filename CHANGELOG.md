@@ -13,8 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 Bundles two commits already on main as a single PyPI republish:
 
-- [`5e8e009`](https://github.com/temurkhan13/openclaw-health-mcp/commit/5e8e009) **test:** server-protocol coverage gap-fillers (Phase 1B). Tests-only — registration / dispatch / unknown-tool fallback; raises `server.py` coverage 65% → 86%. Note: the invalid-severity defensive branch is unreachable through the MCP protocol's enum-validator, documented as known-uncovered.
-- [`bb98ae8`](https://github.com/temurkhan13/openclaw-health-mcp/commit/bb98ae8) **docs:** SPEC.md drift fix. Pre-existing SPEC header read "v0.1 (alpha — mock backend only) / 31 tests" but the package shipped v1.0.x five+ months back with the linux-proc backend production-ready and 74 tests passing. SPEC now correctly reflects the v1.0.x surface.
+- [`25b4b4c`](https://github.com/temurkhan13/openclaw-health-mcp/commit/25b4b4c) **test:** server-protocol coverage gap-fillers (Phase 1B). Tests-only — registration / dispatch / unknown-tool fallback; raises `server.py` coverage 65% → 86%. Note: the invalid-severity defensive branch is unreachable through the MCP protocol's enum-validator, documented as known-uncovered.
+- [`edd8906`](https://github.com/temurkhan13/openclaw-health-mcp/commit/edd8906) **docs:** SPEC.md drift fix. Pre-existing SPEC header read "v0.1 (alpha — mock backend only) / 31 tests" but the package shipped v1.0.x five+ months back with the linux-proc backend production-ready and 74 tests passing. SPEC now correctly reflects the v1.0.x surface.
 
 No code or detection-rule changes. Patch bump republishes to PyPI so the SPEC text matches the rendered "Project description" page.
 
@@ -26,7 +26,7 @@ No code or detection-rule changes. Patch bump republishes to PyPI so the SPEC te
 ## [1.0.1] — 2026-05-04
 
 ### Changed — README v2 metadata refresh (PyPI republish)
-- README repositioned with universal-first lede + HN Ask HN buyer-mental-model citations (commits `eeb75fd` + `2e5315c`). Originally landed in repo on 2026-05-04; this patch bump republishes to PyPI so the new description lands in PyPI search index. No code changes.
+- README repositioned with universal-first lede + HN Ask HN buyer-mental-model citations (commits `76ff0c9` + `b7a7429`). Originally landed in repo on 2026-05-04; this patch bump republishes to PyPI so the new description lands in PyPI search index. No code changes.
 - README "What it does" now leads with the HN front-page thread *Ask HN: How are you monitoring AI agents in production?* (March 2026) and three verbatim comments — the language buyers actually search for.
 - Positioning vs LangSmith / Langfuse / AgentShield / OTEL clarified: this server sits one level closer to the agent runtime, read-only and MCP-native.
 - pyproject.toml description tightened toward universal AI-agent deployment health; cross-platform Linux-proc backend + OpenClaw as native reference framing made explicit.
