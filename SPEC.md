@@ -1,9 +1,9 @@
 # `openclaw-health-mcp` — Server Spec
 
-**Version:** v0.1 (alpha — mock backend only)
-**Status:** mock backend ready; linux-proc + openclaw backends planned for v0.2
-**Tests:** 31 passing
-**Last updated:** 2026-05-04
+**Version:** v1.0.2
+**Status:** mock + linux-proc backends production-ready; openclaw-system backend planned for v1.1
+**Tests:** 74 passing (overnight Phase 1B added 15 server-protocol coverage tests)
+**Last updated:** 2026-05-06 (overnight Phase 2B drift fix)
 
 ---
 
