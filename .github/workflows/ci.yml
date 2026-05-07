@@ -77,5 +77,5 @@ jobs:
         run: ruff check src/ tests/
 
       - name: Run mypy
-        run: mypy src/silentwatch_mcp
+        run: mypy src/openclaw_health_mcp
         continue-on-error: true  # mypy strict mode — surface findings without blocking until v1.0
