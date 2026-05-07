@@ -15,6 +15,7 @@ from mcp.types import (
     TextContent,
     Tool,
 )
+from pydantic import AnyUrl
 
 from openclaw_health_mcp.analysis import build_snapshot
 from openclaw_health_mcp.backends import get_backend
@@ -33,7 +34,7 @@ def build_server(backend_name: str = "mock") -> Server:
 
     # ─────────────────────────── Tools ───────────────────────────
 
-    @server.list_tools()  # type: ignore[misc, no-untyped-call]
+    @server.list_tools()  # type: ignore[no-untyped-call, untyped-decorator]
     async def list_tools() -> list[Tool]:
         return [
             Tool(
@@ -130,7 +131,7 @@ def build_server(backend_name: str = "mock") -> Server:
             ),
         ]
 
-    @server.call_tool()  # type: ignore[misc, no-untyped-call]
+    @server.call_tool()  # type: ignore[untyped-decorator]
     async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
         logger.debug("call_tool name=%s args=%s", name, arguments)
 
@@ -181,30 +182,30 @@ def build_server(backend_name: str = "mock") -> Server:
 
     # ─────────────────────── Resources ────────────────────────
 
-    @server.list_resources()  # type: ignore[misc, no-untyped-call]
+    @server.list_resources()  # type: ignore[no-untyped-call, untyped-decorator]
     async def list_resources() -> list[Resource]:
         return [
             Resource(
-                uri="health://overview",
+                uri=AnyUrl("health://overview"),
                 name="Health overview snapshot",
                 description="Full deployment health snapshot (overall + per-component + critical findings)",
                 mimeType="application/json",
             ),
             Resource(
-                uri="health://gateway",
+                uri=AnyUrl("health://gateway"),
                 name="Gateway status",
                 description="Current gateway process status",
                 mimeType="application/json",
             ),
             Resource(
-                uri="health://resources",
+                uri=AnyUrl("health://resources"),
                 name="CPU + memory metrics",
                 description="Current CPU/memory/swap snapshot",
                 mimeType="application/json",
             ),
         ]
 
-    @server.read_resource()  # type: ignore[misc, no-untyped-call]
+    @server.read_resource()  # type: ignore[no-untyped-call, untyped-decorator]
     async def read_resource(uri: str) -> str:
         if uri == "health://overview":
             gateway = await backend.get_gateway_status()
@@ -226,7 +227,7 @@ def build_server(backend_name: str = "mock") -> Server:
 
     # ──────────────────────── Prompts ────────────────────────
 
-    @server.list_prompts()  # type: ignore[misc, no-untyped-call]
+    @server.list_prompts()  # type: ignore[no-untyped-call, untyped-decorator]
     async def list_prompts() -> list[Prompt]:
         return [
             Prompt(
@@ -251,7 +252,7 @@ def build_server(backend_name: str = "mock") -> Server:
             ),
         ]
 
-    @server.get_prompt()  # type: ignore[misc, no-untyped-call]
+    @server.get_prompt()  # type: ignore[no-untyped-call, untyped-decorator]
     async def get_prompt(name: str, arguments: dict[str, str] | None = None) -> GetPromptResult:
         arguments = arguments or {}
         if name == "diagnose-degraded-health":

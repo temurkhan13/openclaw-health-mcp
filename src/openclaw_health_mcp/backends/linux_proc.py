@@ -37,7 +37,7 @@ from openclaw_health_mcp.types import (
 try:
     import psutil
 except ImportError:  # pragma: no cover - psutil declared in deps; this is defense
-    psutil = None  # type: ignore[assignment]
+    psutil = None  # type: ignore[assignment, unused-ignore]
 
 
 # ──────────────────── Severity classification thresholds ────────────────────
