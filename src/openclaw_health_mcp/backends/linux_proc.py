@@ -238,8 +238,8 @@ class LinuxProcBackend(HealthBackend):
         )
 
     async def get_resource_metrics(self) -> ResourceMetrics:
-        if psutil is None:  # pragma: no cover
-            return ResourceMetrics(
+        if psutil is None:  # pragma: no cover  # type: ignore[unreachable]
+            return ResourceMetrics(  # type: ignore[unreachable]
                 overall_health=HealthLevel.UNKNOWN,
                 notes=["psutil not installed."],
             )
@@ -377,8 +377,8 @@ class LinuxProcBackend(HealthBackend):
         )
 
     async def get_disk_usage(self) -> DiskUsage:
-        if psutil is None:  # pragma: no cover
-            return DiskUsage(health=HealthLevel.UNKNOWN, notes=["psutil not installed."])
+        if psutil is None:  # pragma: no cover  # type: ignore[unreachable]
+            return DiskUsage(health=HealthLevel.UNKNOWN, notes=["psutil not installed."])  # type: ignore[unreachable]
 
         # Pick the root partition usage
         try:
