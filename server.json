@@ -6,12 +6,12 @@
     "url": "https://github.com/temurkhan13/openclaw-health-mcp",
     "source": "github"
   },
-  "version": "1.0.5",
+  "version": "1.0.6",
   "packages": [
     {
       "registryType": "pypi",
       "identifier": "openclaw-health-mcp",
-      "version": "1.0.5",
+      "version": "1.0.6",
       "transport": {
         "type": "stdio"
       }

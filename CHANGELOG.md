@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.6] — 2026-05-08
+
+### Added — `openclaw-health-mcp-report` console script (V3 of cross-product UX retrofit)
+
+A new console script that runs all 7 health checks against the configured backend and prints a one-page GitHub-flavored markdown report on stdout. Suitable for piping into a doc, posting to Slack, opening a GitHub issue, or rendering inline inside Claude Code / Cursor / OpenClaw.
+
+Backend selection mirrors the MCP server: `OPENCLAW_HEALTH_BACKEND=mock|openclaw|linux_proc`. Defaults to `mock` if unset.
+
+Output: verdict header + per-component summary table + grouped action items + recent errors table + footer with version + how-to-configure pointer.
+
+UTF-8 stdout enforced for emoji + non-ASCII separators on Windows. Linux/Mac no-op.
+
+V3 of cross-product UX retrofit. No protocol behavior changed.
+
 ## [1.0.5] — 2026-05-08
 
 ### Added — `openclaw-health-mcp-demo` console script (V1 of cross-product UX retrofit)
