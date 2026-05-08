@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "openclaw-health-mcp"
-version = "1.0.4"
+version = "1.0.5"
 description = "MCP server for AI agent deployment health — gateway status, CPU/memory/swap, recent errors, skill registry integrity, upgrade history, cron + disk usage. Cross-platform Linux-proc backend; OpenClaw operators get native ~/.openclaw/ parsing as reference implementation."
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -44,6 +44,7 @@ dev = [
 
 [project.scripts]
 openclaw-health-mcp = "openclaw_health_mcp.__main__:main"
+openclaw-health-mcp-demo = "openclaw_health_mcp.demo:main"
 
 [project.urls]
 Homepage = "https://github.com/temurkhan13/openclaw-health-mcp"

@@ -7,6 +7,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.5] — 2026-05-08
+
+### Added — `openclaw-health-mcp-demo` console script (V1 of cross-product UX retrofit)
+
+A new console script that runs all 7 health checks against the bundled mock backend and prints a one-page operator-readable health overview in ~30 seconds. Intended for the first-30-seconds-after-install moment.
+
+The mock backend is hand-crafted to exhibit a representative mix of post-upgrade health states:
+
+- Gateway DEGRADED (1 crash post 2026.4.26 upgrade, bound to 0.0.0.0)
+- CPU + memory DEGRADED (memory 78% on a 2GB VPS)
+- Recent errors: 4 WARNING+ entries from gateway / web-search skill
+- Skills CRITICAL (`clawhub-trending-bot-v2` flagged for ClawHavoc-pattern exfiltration)
+- Upgrade DEGRADED (2026.4.23→2026.4.26 rollback 2 days ago)
+- Cron DEGRADED (1 job overdue 72h)
+- Disk DEGRADED (82% root, gateway.log alone is 1.2 GB)
+
+Output mirrors what the MCP server returns via the `health_overview` tool — but rendered as a plain-English summary instead of JSON.
+
+**Usage:**
+
+```
+$ pip install openclaw-health-mcp
+$ openclaw-health-mcp-demo
+openclaw-health-mcp v1.0.5 · synthetic demo
+
+  Gateway · ⚠ DEGRADED
+    alive:                yes
+    crashes (24h):        1
+  ...
+  Skill registry · ✗ CRITICAL
+    flagged:              clawhub-trending-bot-v2
+  ...
+
+  Verdict: ✗ CRITICAL — at least one component requires immediate attention.
+```
+
+**No external I/O.** Demo runs against the in-memory mock backend; no network, no API keys, no filesystem access. Safe to run anywhere.
+
+Adds a second console-script entry (`openclaw-health-mcp-demo`) alongside the existing MCP server entry.
+
 ## [1.0.4] — 2026-05-08
 
 ### Added — first-run startup banner (visibility-after-install fix, V2 of cross-product UX retrofit)
