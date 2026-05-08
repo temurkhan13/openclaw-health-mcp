@@ -87,6 +87,16 @@ Prompts:
 pip install openclaw-health-mcp
 ```
 
+### Quick verify (~30 seconds, no config)
+
+After install, run the bundled demo to see all 7 health checks fire against the mock backend:
+
+```bash
+openclaw-health-mcp-demo
+```
+
+You'll see a one-page health overview with gateway / CPU+memory / errors / skills / upgrade / cron / disk sections — typically a CRITICAL verdict driven by the mock backend's ClawHavoc-pattern skill exfiltration flag + post-rollback degradation. No external I/O, no API keys — safe to run anywhere. Useful first-30-seconds check before wiring up Claude Desktop or pointing at a real `~/.openclaw/` directory.
+
 ### Configure for Claude Desktop
 
 Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
