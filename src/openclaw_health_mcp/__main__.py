@@ -8,7 +8,24 @@ from contextlib import suppress
 
 from mcp.server.stdio import stdio_server
 
+from openclaw_health_mcp import __version__
 from openclaw_health_mcp.server import build_server
+
+
+def _emit_startup_banner(backend: str) -> None:
+    """Print a one-line value-prove banner to stderr at startup.
+
+    Goes to stderr (stdout is reserved for MCP JSON-RPC protocol traffic).
+    Suppressible via `OPENCLAW_HEALTH_QUIET=1` for users who pipe stderr to a log file.
+    """
+    if os.environ.get("OPENCLAW_HEALTH_QUIET", "").strip() in {"1", "true", "yes"}:
+        return
+    banner = (
+        f"openclaw-health-mcp v{__version__} ready · "
+        f"gateway/skills/logs/upgrade-status checks · "
+        f"backend={backend}"
+    )
+    print(banner, file=sys.stderr, flush=True)
 
 
 def main() -> None:
@@ -17,6 +34,7 @@ def main() -> None:
     Backend is selected via the `OPENCLAW_HEALTH_BACKEND` env var (default: `mock`).
     """
     backend = os.environ.get("OPENCLAW_HEALTH_BACKEND", "mock")
+    _emit_startup_banner(backend)
 
     async def _run() -> None:
         server = build_server(backend_name=backend)
