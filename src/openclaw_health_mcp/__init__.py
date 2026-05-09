@@ -1,6 +1,6 @@
 """openclaw-health-mcp — MCP server exposing OpenClaw deployment health."""
 
-__version__ = "1.0.6"
+__version__ = "1.0.7"
 
 from openclaw_health_mcp.server import build_server
 

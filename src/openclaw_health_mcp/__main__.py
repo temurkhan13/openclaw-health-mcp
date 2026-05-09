@@ -29,10 +29,15 @@ def _emit_startup_banner(backend: str) -> None:
 
 
 def main() -> None:
-    """Boot the MCP server over stdio transport.
+    """Run the MCP server, OR dispatch to a subcommand.
 
-    Backend is selected via the `OPENCLAW_HEALTH_BACKEND` env var (default: `mock`).
+    Subcommands:
+    - ``monitor [args]`` → long-running NDJSON event stream (Aufgaard's monitor framework).
     """
+    if len(sys.argv) >= 2 and sys.argv[1] == "monitor":
+        from openclaw_health_mcp.monitor import main as monitor_main
+        sys.exit(monitor_main())
+
     backend = os.environ.get("OPENCLAW_HEALTH_BACKEND", "mock")
     _emit_startup_banner(backend)
 

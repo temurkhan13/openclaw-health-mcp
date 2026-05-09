@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.7] — 2026-05-09
+
+### Added — `monitor` subcommand for NDJSON health-alert event stream (Aufgaard Phase 6 dependency)
+
+A new subcommand: `python -m openclaw_health_mcp monitor [--poll 60s] [--format ndjson]`. Polls all 7 health components (gateway, cpu_memory, skill_registry, upgrade, cron, disk, plus recent errors) on the configured interval and emits one NDJSON line per state transition INTO degraded/critical.
+
+Closes Aufgaard's Phase 6 `health-monitor` dependency.
+
+**Event shape:**
+
+```json
+{"type":"health_alert","component":"skill_registry","state":"CRITICAL","previous_state":"HEALTHY","message":"Skill 'clawhub-trending-bot-v2' added in last 24h, makes HTTP POST to non-allowlisted host","datetime":"2026-05-09T18:47:21Z","severity":"critical"}
+```
+
+Fields match Aufgaard's notification template: `component`, `state`, `message`. Plus `previous_state`, `datetime`, `severity` for richer context.
+
+**State-transition dedupe:** the monitor tracks `last_states` per component and only emits when a component transitions from a less-severe state. A sustained CRITICAL doesn't re-fire — only when it changes (drops to DEGRADED, or escalates further). On startup all current non-HEALTHY components fire (since previous_state is implicitly HEALTHY).
+
+**Severity tiers:** `critical` for CRITICAL transitions, `high` for DEGRADED, `info` otherwise.
+
+`__main__.py` now dispatches `monitor` as a subcommand. Plain `python -m openclaw_health_mcp` (no args) still runs the MCP server unchanged.
+
 ## [1.0.6] — 2026-05-08
 
 ### Added — `openclaw-health-mcp-report` console script (V3 of cross-product UX retrofit)
