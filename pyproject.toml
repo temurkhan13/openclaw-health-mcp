@@ -9,7 +9,7 @@ description = "MCP server for AI agent deployment health — gateway status, CPU
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [
-    { name = "Temur Khan", email = "temur@pixelette.tech" },
+    { name = "Temur Khan", email = "hello@temhan.dev" },
 ]
 keywords = ["mcp", "model-context-protocol", "claude", "ai-agent", "production-ai", "health", "monitoring", "deployment", "observability", "openclaw", "agent-ops", "infrastructure"]
 classifiers = [
