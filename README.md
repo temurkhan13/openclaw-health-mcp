@@ -201,13 +201,13 @@ MIT — see [LICENSE](./LICENSE).
 
 ## Related
 
-- [Production-AI MCP Suite (Gumroad bundle)](https://temurah.gumroad.com/l/production-ai-mcp-suite) — this server plus 6 others in one curated 7-pack bundle with a decision tree, day-one drill, and Custom MCP Build CTA. $99, or $49 with `LAUNCH50` for the first 30 days.
+- [Production-AI MCP Suite (Gumroad bundle)](https://temurah.gumroad.com/l/production-ai-mcp-suite) — this server plus 6 others in one curated 7-pack bundle with a decision tree, day-one drill, and Custom MCP Build CTA. $29.
 - [silentwatch-mcp](https://github.com/temurkhan13/silentwatch-mcp) — cron silent-failure detection. Install alongside this server for richer `cron_health` data.
 - [openclaw-cost-tracker-mcp](https://github.com/temurkhan13/openclaw-cost-tracker-mcp) — token-cost telemetry + 429 prediction (v1.1+)
 - [openclaw-skill-vetter-mcp](https://github.com/temurkhan13/openclaw-skill-vetter-mcp) — ClawHub skill security vetting
 - [openclaw-upgrade-orchestrator-mcp](https://github.com/temurkhan13/openclaw-upgrade-orchestrator-mcp) — read-only upgrade advisor + provider-side regression detection (v1.2+)
 - [openclaw-output-vetter-mcp](https://github.com/temurkhan13/openclaw-output-vetter-mcp) — agent claim verification (inline grounding-check + swallowed-exception scanner + multi-turn transcript review)
-- [AI Production Discipline Framework](https://temurah.gumroad.com/l/ai-production-discipline-framework) — Notion template, $29 — the methodology these MCP tools implement.
+- [AI Production Discipline Framework](https://temurah.gumroad.com/l/ai-production-discipline-framework) — Notion template, $19 — the methodology these MCP tools implement.
 - [SPEC.md](./SPEC.md) — full server design.
 - [Model Context Protocol](https://modelcontextprotocol.io/) — protocol overview.
 
