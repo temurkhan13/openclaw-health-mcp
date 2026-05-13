@@ -244,4 +244,4 @@ This MCP server is part of the **[AI Production Discipline Framework](https://te
 
 Companion server: **[silentwatch-mcp](https://github.com/temurkhan13/silentwatch-mcp)** — install both for full operational visibility.
 
-For audit consulting that applies the framework to your specific system: **temur@pixelette.tech**, subject `AI audit inquiry`.
+For audit consulting that applies the framework to your specific system: **hello@temhan.dev**, subject `AI audit inquiry`.
